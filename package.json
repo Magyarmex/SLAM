@@ -1,0 +1,8 @@
+{
+  "name": "clash-royale-dojo",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/test.js"
+  }
+}

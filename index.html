@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clash Royale Dojo - Beta</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-content">
+      <p class="eyebrow">Beta</p>
+      <h1>Clash Royale Dojo</h1>
+      <p class="lede">Interactive drills, strategic labs, and sparring simulations to sharpen your arena instincts.</p>
+      <div class="hero-actions">
+        <button class="primary" id="startTraining">Start training</button>
+        <button class="ghost" id="openDeckLab">Open deck lab</button>
+      </div>
+      <div class="metrics" id="heroMetrics"></div>
+    </div>
+    <div class="hero-grid">
+      <div class="metric-card">
+        <p class="label">Reaction best</p>
+        <p class="value" id="reactionBest">-- ms</p>
+      </div>
+      <div class="metric-card">
+        <p class="label">Placement accuracy</p>
+        <p class="value" id="placementAccuracy">--%</p>
+      </div>
+      <div class="metric-card">
+        <p class="label">Elixir IQ</p>
+        <p class="value" id="elixirScore">--</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="drills" class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Reflex & Timing</p>
+          <h2>Reaction dojo</h2>
+          <p>Practice lightning-fast answers to surprise threats and spell timings.</p>
+        </div>
+        <div class="panel-metrics" id="drillDebug"></div>
+      </div>
+      <div class="grid">
+        <div class="card" id="reactionCard">
+          <h3>Reaction strike</h3>
+          <p>Click as soon as the threat appears. Tracks median, best, and consistency.</p>
+          <div class="reaction-area" id="reactionArea">Waiting...</div>
+          <div class="controls">
+            <button id="startReaction" class="primary">Start</button>
+            <button id="resetReaction" class="ghost">Reset stats</button>
+          </div>
+          <ul class="stat-list" id="reactionStats"></ul>
+        </div>
+        <div class="card" id="timingCard">
+          <h3>Spell timing</h3>
+          <p>Drop the Log exactly when the barrel lands. Early or late clicks are penalized.</p>
+          <div class="timing-lane">
+            <div class="landing-zone" id="landingZone"></div>
+            <div class="barrel" id="barrel">🪵</div>
+          </div>
+          <div class="controls">
+            <button id="startTiming" class="primary">Start lane</button>
+            <button id="castLog" class="accent">Cast Log</button>
+          </div>
+          <p class="feedback" id="timingFeedback">No attempt yet.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="placement" class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Micro-placement</p>
+          <h2>Grid precision lab</h2>
+          <p>Drag the defense onto the exact tile to counter the incoming push.</p>
+        </div>
+        <div class="panel-metrics" id="placementDebug"></div>
+      </div>
+      <div class="grid two-col">
+        <div class="card">
+          <div class="placement-meta" id="placementScenario"></div>
+          <div class="arena" id="arena"></div>
+          <div class="controls">
+            <button id="newPlacement" class="primary">New scenario</button>
+            <button id="validatePlacement" class="accent">Check placement</button>
+          </div>
+          <p class="feedback" id="placementFeedback">Drag the marker to the grid.</p>
+        </div>
+        <div class="card">
+          <h3>Placement tips</h3>
+          <ul id="placementTips" class="tip-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="elixir" class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Elixir & cycle</p>
+          <h2>Elixir IQ trainer</h2>
+          <p>Count trades, track cycles, and predict rotations like a pro.</p>
+        </div>
+        <div class="panel-metrics" id="elixirDebug"></div>
+      </div>
+      <div class="grid two-col">
+        <div class="card">
+          <h3>Elixir quiz</h3>
+          <p id="elixirQuestion"></p>
+          <input id="elixirAnswer" type="number" placeholder="Your answer" />
+          <div class="controls">
+            <button id="submitElixir" class="primary">Submit</button>
+            <button id="nextElixir" class="ghost">Next quiz</button>
+          </div>
+          <p class="feedback" id="elixirFeedback"></p>
+        </div>
+        <div class="card">
+          <h3>Cycle tracker</h3>
+          <div id="cycleDeck" class="tag-row"></div>
+          <p id="cyclePrompt"></p>
+          <div class="controls">
+            <input id="cycleInput" placeholder="Card back in hand?" />
+            <button id="submitCycle" class="primary">Answer</button>
+          </div>
+          <p class="feedback" id="cycleFeedback"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="strategy" class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Strategy dojo</p>
+          <h2>Scenario quizzes</h2>
+          <p>Choose the smartest play, get coaching feedback, and track your belt.</p>
+        </div>
+        <div class="panel-metrics" id="strategyDebug"></div>
+      </div>
+      <div class="card">
+        <div id="scenarioQuestion"></div>
+        <div id="scenarioOptions" class="option-list"></div>
+        <div class="controls">
+          <button id="nextScenario" class="primary">New scenario</button>
+        </div>
+        <p class="feedback" id="scenarioFeedback"></p>
+      </div>
+    </section>
+
+    <section id="decklab" class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Deck building</p>
+          <h2>Deck & synergy lab</h2>
+          <p>Assemble a deck, see strengths, discover synergies, and compare matchups.</p>
+        </div>
+        <div class="panel-metrics" id="deckDebug"></div>
+      </div>
+      <div class="grid three-col">
+        <div class="card">
+          <h3>Deck builder</h3>
+          <div class="tag-row" id="deckSlots"></div>
+          <div class="controls">
+            <select id="cardPicker"></select>
+            <button id="addCard" class="primary">Add card</button>
+            <button id="clearDeck" class="ghost">Clear deck</button>
+          </div>
+          <div id="deckFeedback" class="feedback"></div>
+        </div>
+        <div class="card">
+          <h3>Synergy explorer</h3>
+          <div class="controls">
+            <select id="synergyA"></select>
+            <select id="synergyB"></select>
+            <button id="showSynergy" class="accent">Reveal</button>
+          </div>
+          <p class="feedback" id="synergyResult"></p>
+        </div>
+        <div class="card">
+          <h3>Matchup analyzer</h3>
+          <div class="controls">
+            <select id="matchupDeckA"></select>
+            <select id="matchupDeckB"></select>
+            <button id="analyzeMatchup" class="primary">Analyze</button>
+          </div>
+          <div id="matchupResult"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="simulator" class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Sparring</p>
+          <h2>AI battle sandbox</h2>
+          <p>Run repeatable scenarios with adjustable aggression and timing.</p>
+        </div>
+        <div class="panel-metrics" id="simDebug"></div>
+      </div>
+      <div class="grid two-col">
+        <div class="card">
+          <h3>Preset scenarios</h3>
+          <div class="controls">
+            <select id="scenarioPicker"></select>
+            <input id="aggression" type="range" min="1" max="10" value="5" />
+            <label for="aggression">AI aggression</label>
+            <button id="runScenario" class="primary">Run scenario</button>
+          </div>
+          <div id="scenarioLog" class="log"></div>
+        </div>
+        <div class="card">
+          <h3>Performance & errors</h3>
+          <p id="simPerformance"></p>
+          <div class="log" id="debugConsole"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="progress" class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Progression</p>
+          <h2>Belt tracker</h2>
+          <p>Track all drills, highlight weaknesses, and set your next target.</p>
+        </div>
+        <div class="panel-metrics" id="progressDebug"></div>
+      </div>
+      <div class="grid two-col">
+        <div class="card">
+          <h3>Progress snapshot</h3>
+          <ul class="stat-list" id="progressSnapshot"></ul>
+        </div>
+        <div class="card">
+          <h3>Alerts & goals</h3>
+          <ul class="tip-list" id="goalList"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Clash Royale Dojo beta • Built for deep practice. Feedback welcome.</p>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
